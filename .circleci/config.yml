@@ -1,22 +1,36 @@
 version: 2
 jobs:
-  first-job:
+  create_file:
     docker:
       - image: circleci/python:3.7.0
     steps:
       - checkout
       - run: echo "Hello CircleCI"
-      - run: sleep 10
-  second-job:
+      - run: mkdir test_workspace
+      - run: ls > test_workspace/ls_contents.txt
+      - persist_to_workspace:
+          root: test_workspace
+          paths:
+            - ls_contents.txt
+        
+  print_file:
     docker:
       - image: circleci/python:3.7.0
     steps:
       - checkout
-      - run: echo "Second hello"
-      - run: sleep 15
+      - run:
+          name: Print message
+          command: echo "Retrieving from last job" 
+      - attach_workspace:
+          at: test_workspace
+      - run:
+          name: Print contents of last file
+          command: cat test_workspace/ls_contents.txt
 workflows:
   version: 2
-  two-jobs:
+  print_ls:
     jobs:
-      - first-job
-      - second-job
+      - create_file
+      - print_file:
+          requires:
+            - create_file
