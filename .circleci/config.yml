@@ -3,10 +3,10 @@ jobs:
   first-job:
     docker:
       - image: circleci/python:3.7.0
-  steps:
-    - checkout
-    - run: echo "Hello CircleCI"
-    - run: sleep 10
+    steps:
+      - checkout
+      - run: echo "Hello CircleCI"
+      - run: sleep 10
   second-job:
     docker:
       - image: circleci/python:3.7.0
@@ -18,5 +18,5 @@ workflows:
   version: 2
   two-jobs:
     jobs:
-      - one
-      - two
+      - first-job
+      - second-job
