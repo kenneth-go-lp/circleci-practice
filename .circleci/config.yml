@@ -12,8 +12,8 @@ jobs:
       - image: circleci/python:3.7.0
     steps:
       - checkout
-      run: echo "Second hello"
-      run: sleep 15
+      - run: echo "Second hello"
+      - run: sleep 15
 workflows:
   version: 2
   two-jobs:
